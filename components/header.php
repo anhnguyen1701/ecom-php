@@ -7,14 +7,14 @@
 <!-- Navigation-->
 <nav class="navbar navbar-light text-light bg-white sticky-top">
     <div class="container px-5 py-2">
-        <a class="navbar-brand fw-bolder text-dark" href="/index.html">Apple iPhone</a>
+        <a class="navbar-brand fw-bolder text-dark" href="index.php">Apple iPhone</a>
         <div class="desk-menu justify-content-left">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="">TRANG CHỦ</a>
+                    <a class="nav-link" href="index.php">TRANG CHỦ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="product-detail.html">SẢN PHẨM
+                    <a class="nav-link" href="">SẢN PHẨM
                     </a>
                 <li class="nav-item">
                     <a class="nav-link" href="">GIỚI THIỆU</a>
@@ -27,7 +27,7 @@
 
         <div>
             <button class="btn btn-outline-dark">
-                <a href="./cart.html" style="color:#000; text-decoration: none;">
+                <a href="cart.php" style="color:#000; text-decoration: none;">
                     <i class="bi-cart-fill me-1"></i>
                     <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
                 </a>

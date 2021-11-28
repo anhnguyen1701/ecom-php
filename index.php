@@ -1,3 +1,5 @@
+<?php include 'db/dbhelper.php' ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -56,73 +58,31 @@
             </div>
 
             <div class="row row-cols-4 justify-content-left">
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <img class="card-img-top pt-4" src="./img/product/samsung-galaxy-s21-ultra-bac-600x600-1-600x600.jpg" />
-                        <div class="card-body p-4 mt-5">
-                            <div class="text-left">
-                                <p class="card-title">iPhone 13 Pro Max 256GB I Chính hãng VN/A</p>
-                                <p class="card-price text-center">20.000.000₫</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php
+                $sql = "select * from product";
+                $list = executeResult($sql);
 
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <img class="card-img-top pt-4" src="./img/product/iphone-12-pro-max-xanh-duong-new-600x600-600x600.jpg" />
-                        <div class="card-body p-4 mt-5">
-                            <div class="text-left">
-                                <p class="card-title">iPhone 13 Pro Max 256GB I Chính hãng VN/A</p>
-                                <p class="card-price text-center">20.000.000₫</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <img class="card-img-top pt-4" src="./img/product/iphone-12-xanh-duong-new-2-600x600.jpg" />
-                        <div class="card-body p-4 mt-5">
-                            <div class="text-left">
-                                <p class="card-title">iPhone 13 Pro Max 256GB I Chính hãng VN/A</p>
-                                <p class="card-price text-center">20.000.000₫</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <a href="/product-detail.html">
-                            <img class="card-img-top pt-4" src="./img/product/iphone-13-red-1-600x600.jpg" />
-                        </a>
-                        <div class="card-body p-4 mt-5">
-                            <div class="text-left">
-                                <a href="/product-detail.html">
-                                    <p class="card-title">iPhone 13 Pro Max 256GB I Chính hãng VN/A</p>
-                                </a>
-                                <p class="card-price text-center">20.000.000₫</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <a href="/product-detail.html">
-                            <img class="card-img-top pt-4" src="./img/product/samsung-galaxy-note-20-062220-122200-fix-600x600.jpg" />
-                        </a>
-                        <div class="card-body p-4 mt-5">
-                            <div class="text-left">
-                                <a href="/product-detail.html">
-                                    <p class="card-title">iPhone 13 Pro Max 256GB I Chính hãng VN/A</p>
-                                </a>
-                                <p class="card-price text-center">20.000.000₫</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                foreach ($list as $item) {
+                    $text_price = number_format($item['price']);
+                    echo "
+                                <div class='col mb-5'>
+                                    <div class='card h-100'>
+                                    <a href='product-detail.php?p=$item[id]'>
+                                        <img class='card-img-top pt-4' src=" . $item['img'] . " />
+                                    </a>
+                                        <div class='card-body p-4 mt-5'>
+                                            <div class='text-left'>
+                                            <a href='product-detail.php?p=$item[id]'>
+                                                <p class='card-title'>" . $item['name'] . "</p>
+                                            </a>
+                                                <p class='card-price text-center'>$text_price ₫</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ";
+                }
+                ?>
             </div>
         </div>
     </section>

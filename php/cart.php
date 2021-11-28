@@ -11,12 +11,23 @@ if (!empty($_POST)) {
                 $productid = $_POST['product_id'];
                 $product_quantity = $_POST['product_quantity'];
 
-                $sql = "insert into `cart` (`userid`, `productid`, `product_quant`) values ('1', $productid, $product_quantity)";
-
-                if (execute($sql)) {
-                    echo json_encode(array("statusCode" => 200));
+                $sql = "select * from cart where productid = $productid";
+                $row = executeSingleResult($sql);
+                if ($row != null) {
+                    $count = (int)$row['product_quant'] + (int)$product_quantity;
+                    $sql2 = "update cart set product_quant = $count where productid = $productid";
+                    if (execute($sql2)) {
+                        echo json_encode(array("statusCode" => 200));
+                    } else {
+                        echo json_encode(array("statusCode" => 500));
+                    }
                 } else {
-                    echo json_encode(array("statusCode" => 500));
+                    $sql2 = "insert into `cart` (`userid`, `productid`, `product_quant`) values ('1', $productid, $product_quantity)";
+                    if (execute($sql2)) {
+                        echo json_encode(array("statusCode" => 200));
+                    } else {
+                        echo json_encode(array("statusCode" => 500));
+                    }
                 }
                 break;
 
@@ -30,6 +41,18 @@ if (!empty($_POST)) {
                 } else {
                     echo json_encode(array("statusCode" => 500));
                 }
+                break;
+
+            case 'delete':
+                $id = $_POST['id'];
+                $sql = "delete from cart where id = $id";
+
+                if (execute($sql)) {
+                    echo json_encode(array("statusCode" => 200));
+                } else {
+                    echo json_encode(array("statusCode" => 500));
+                }
+                break;
         }
     }
 }

@@ -50,7 +50,7 @@ $total_oder_price = 0;
             $total_oder_price += $product['price'] * $item['product_quant'];
 
             echo "
-                <div class='row justify-content-left item-cart'>
+                <div class='row justify-content-left item-cart' data-id='$item[id]'>
                     <div class='col-md-2'>
                         <img src='$product[img]' class='cart-img' alt=''>
                     </div>
@@ -81,14 +81,14 @@ $total_oder_price = 0;
 
                     <div class='col-md-2'>
                         <div class='quantity-area clearfix'>
-                            <input type='button' value='-' onclick='minusQuantity()' class='qty-btn'>
-                            <input type='text' id='quantity' name='quantity' value='$item[product_quant]' min='1' class='quantity-selector'>
-                            <input type='button' value='+' onclick='plusQuantity()' class='qty-btn'>
+                            <input type='button' value='-' onclick='minusQuantity($item[id])' class='qty-btn'>
+                            <input type='text' id='quantity' name='quantity' value='$item[product_quant]' class='quantity-selector'>
+                            <input type='button' value='+' onclick='plusQuantity($item[id])' class='qty-btn'>
                         </div>
                     </div>
 
                     <div class='col-md-2'>
-                        <button class=' btn text-danger'>
+                        <button class='btn text-danger' onclick='deleteProduct($item[id])'>
                             Xóa
                         </button>
                     </div>
@@ -147,10 +147,34 @@ $total_oder_price = 0;
         </div>
     </div>
 
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <script src="js/product-gallery.js"></script>
+    <?php include 'components/footer.php' ?>
+
+    <script>
+        function deleteProduct(id) {
+            $.ajax({
+                url: './php/cart.php',
+                type: 'POST',
+                data: {
+                    action: 'delete',
+                    id: id
+                },
+                success: function(data) {
+                    let res = JSON.parse(data);
+                    if (res.statusCode == 200) {
+                        document.querySelector('[data-id=' + '"' + id + '"' + ']').style.display = "none";
+                    } else {
+                        console.log(res.statusCode);
+                    }
+                }
+            })
+        }
+
+        function minusQuantity(id) {
+            $.ajax({
+                
+            })
+        }
+    </script>
 </body>
 
 </html>

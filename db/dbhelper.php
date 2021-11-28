@@ -7,10 +7,10 @@ function execute($sql)
     // open connection to database
     $con = mysqli_connect(HOST, USERNAME, PASSWORD, DATABASE);
     //insert, update, delete
-    mysqli_query($con, $sql);
-
+    $res = mysqli_query($con, $sql);
     //close connection
     mysqli_close($con);
+    return $res;
 }
 
 function executeResult($sql)

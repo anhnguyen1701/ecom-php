@@ -96,6 +96,7 @@ if (isset($_GET['p'])) {
 
                         <div class="product-title">
                             <h1><?php echo $name ?></h1>
+                            <input type="hidden" id="product_id" value=<?php echo $id ?>>
                             <span id="pro_sku">SKU: <?php echo $id ?></span>
                         </div>
 
@@ -122,7 +123,7 @@ if (isset($_GET['p'])) {
                                 </div>
                                 <div class="wrap-addcart clearfix">
                                     <div class="row-flex">
-                                        <button type="button" class="button btn-addtocart addtocart-modal">
+                                        <button type="button" class="button btn-addtocart addtocart-modal" onclick="checkout()">
                                             Thêm vào
                                         </button>
                                         <button type="button" class="buy-now button" style="display: block;">
@@ -150,6 +151,51 @@ if (isset($_GET['p'])) {
     </section>
 
     <?php include 'components/footer.php' ?>
+
+    <script>
+        //modified quantity
+        let count = 1;
+        let quantity = document.getElementById('quantity');
+
+        function minusQuantity() {
+            if (count > 1) {
+                count--;
+                quantity.value = count;
+            }
+        }
+
+        function plusQuantity() {
+            count++;
+            quantity.value = count;
+        }
+
+        //checkout send req to server
+
+        function checkout() {
+            let product_id = document.getElementById('product_id').value;
+            let product_quantity = document.getElementById('quantity').value;
+
+            $.ajax({
+                url: "./php/cart.php",
+                type: "POST",
+                data: {
+                    action: 'add',
+                    product_id: product_id,
+                    product_quantity: product_quantity
+                },
+                success: function(data) {
+                    let res = JSON.parse(data);
+                    if (res.statusCode == 200) {
+                        getCartQuantity();
+                        alert("Đã thêm sản phẩm vào giỏ hàng");
+                    } else {
+                        console.log(res.statusCode);
+                    }
+                }
+            })
+
+        }
+    </script>
 </body>
 
 </html>

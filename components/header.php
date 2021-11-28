@@ -29,7 +29,9 @@
             <button class="btn btn-outline-dark">
                 <a href="cart.php" style="color:#000; text-decoration: none;">
                     <i class="bi-cart-fill me-1"></i>
-                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                    <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart_quantity">
+                        0
+                    </span>
                 </a>
             </button>
             <button class="btn btn-outline-dark">

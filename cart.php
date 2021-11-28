@@ -1,3 +1,14 @@
+<?php
+require_once 'db/dbhelper.php';
+require_once 'db/config.php';
+
+$user_id = 1;
+$sql = "select * from cart where userid = $user_id";
+$res = execute($sql);
+
+$total_oder_price = 0;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +16,7 @@
 <?php include 'components/head.php' ?>
 
 <body>
-<?php include 'components/header.php' ?>
+    <?php include 'components/header.php' ?>
 
     <!-- Product section-->
     <section class="">
@@ -28,57 +39,73 @@
         </div>
 
         <!--detail product main-->
-        <div class="container mt-4">
-            <div class="row justify-content-left item-cart">
-                <div class="col-md-2">
-                    <img src="./img/product/iphone-12-pro-max-xanh-duong-new-600x600-600x600.jpg" class="cart-img"
-                        alt="">
-                </div>
-                <div class="col-md-2">
-                    <span class="align-self-center">
-                        iPhone 13 Pro Max 256GB I Chính hãng VN/A
-                    </span>
-                </div>
-                <div class="col-md-2 align-middle">
-                    <span>
-                        Màu đen
-                    </span>
-                    <br>
-                    <span>
-                        20.000.000₫
-                    </span>
-                </div>
+        <?php
+        echo "<div class='container mt-4'>";
+        foreach ($res as $item) {
+            $sql = "select * from product where id = $item[productid]";
+            $product = executeSingleResult($sql);
 
-                <div class="col-md-2">
-                    <span>
-                        20.000.000₫
-                    </span>
-                </div>
+            $single_price = number_format($product['price']);
+            $total_price = number_format($product['price'] * $item['product_quant']);
+            $total_oder_price += $product['price'] * $item['product_quant'];
 
-                <div class="col-md-2">
-                    <div class="quantity-area clearfix">
-                        <input type="button" value="-" onclick="minusQuantity()" class="qty-btn">
-                        <input type="text" id="quantity" name="quantity" value="1" min="1" class="quantity-selector">
-                        <input type="button" value="+" onclick="plusQuantity()" class="qty-btn">
+            echo "
+                <div class='row justify-content-left item-cart'>
+                    <div class='col-md-2'>
+                        <img src='$product[img]' class='cart-img' alt=''>
+                    </div>
+                    <div class='col-md-2'>
+                        <span class='align-self-center fw-bolder'>
+                            $product[name]
+                        </span>
+                    </div>
+                    <div class='col-md-2 align-middle'>
+                        <span class='fw-bolder'>
+                            Đơn giá
+                        </span>
+                        <br>
+                        <span>
+                            $single_price
+                        </span>
+                    </div>
+
+                    <div class='col-md-2'>
+                        <span class='fw-bolder'>
+                            Tổng tiền
+                        </span>
+                        <br>
+                        <span>
+                            $total_price
+                        </span>
+                    </div>
+
+                    <div class='col-md-2'>
+                        <div class='quantity-area clearfix'>
+                            <input type='button' value='-' onclick='minusQuantity()' class='qty-btn'>
+                            <input type='text' id='quantity' name='quantity' value='$item[product_quant]' min='1' class='quantity-selector'>
+                            <input type='button' value='+' onclick='plusQuantity()' class='qty-btn'>
+                        </div>
+                    </div>
+
+                    <div class='col-md-2'>
+                        <button class=' btn text-danger'>
+                            Xóa
+                        </button>
                     </div>
                 </div>
-
-                <div class="col-md-2">
-                    <button class=" btn text-danger">
-                        Xóa
-                        </span>
-                </div>
-            </div>
+            ";
+        }
+        echo "</div>"
+        ?>
     </section>
 
     <div class="row checkout justify-content-end">
         <div class="col-3 justify-content-end">
-            <h1 class="total-checkout-title">Tổng tiền:</h1>
-            <span class="total-checkout-amount">20.000.000₫</span>
+            <h1 class="total-checkout-title">Tổng đơn:</h1>
+            <span class="total-checkout-amount"><?php echo number_format($total_oder_price) ?>₫</span>
         </div>
         <div class="col-2" style="margin-right: 100px;">
-            <button type="button" class="buy-now button" style="display: block;" data-bs-toggle="modal"
-                data-bs-target="#checkout">
+            <button type="button" class="buy-now button" style="display: block;" data-bs-toggle="modal" data-bs-target="#checkout">
                 Thanh toán
             </button>
         </div>

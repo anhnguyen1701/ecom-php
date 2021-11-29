@@ -123,25 +123,25 @@ $total_oder_price = 0;
                     <form>
                         <div class="mb-2">
                             <label for="recipient-name" class="col-form-label fw-bolder">Họ và tên</label>
-                            <input type="text" class="form-control" id="recipient-name">
+                            <input type="text" class="form-control" id="checkout-name">
                         </div>
                         <div class="mb-2">
                             <label for="message-text" class="col-form-label fw-bolder">Địa chỉ</label>
-                            <textarea class="form-control" id="message-text"></textarea>
+                            <input class="form-control" id="checkout-address"></input>
                         </div>
                         <div class="mb-2">
                             <label for="message-text" class="col-form-label fw-bolder">Số điện thoại</label>
-                            <textarea class="form-control" id="message-text"></textarea>
+                            <input class="form-control" id="checkout-phone"></input>
                         </div>
                         <div class="mb-2">
                             <label for="message-text" class="col-form-label fw-bolder">Note</label>
-                            <textarea class="form-control" id="message-text"></textarea>
+                            <input class="form-control" id="checkout-note"></input>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Thanh toán</button>
+                    <button type="button" class="btn btn-primary" onclick="checkout()">Thanh toán</button>
                 </div>
             </div>
         </div>
@@ -171,7 +171,37 @@ $total_oder_price = 0;
 
         function minusQuantity(id) {
             $.ajax({
-                
+
+            })
+        }
+
+        function checkout() {
+            let checkout_name = document.getElementById('checkout-name').value;
+            let checkout_address = document.getElementById('checkout-address').value;
+            let checkout_phone = document.getElementById('checkout-phone').value;
+            let checkout_note = document.getElementById('checkout-note').value;
+            let data = getAllCart();
+
+            $.ajax({
+                url: './php/checkout.php',
+                type: 'POST',
+                data: {
+                    action: 'checkout',
+                    checkout_name: checkout_name,
+                    checkout_address: checkout_address,
+                    checkout_phone: checkout_phone,
+                    checkout_note: checkout_note,
+                    cart: data
+                },
+                success: function(data) {
+                    let res = JSON.parse(data);
+                    if (res.statusCode == 200) {
+                        location.reload();
+                        alert("Thanh toán thành công");
+                    } else {
+                        console.log(res.statusCode);
+                    }
+                }
             })
         }
     </script>

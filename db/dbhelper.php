@@ -8,6 +8,9 @@ function execute($sql)
     $con = mysqli_connect(HOST, USERNAME, PASSWORD, DATABASE);
     //insert, update, delete
     $res = mysqli_query($con, $sql);
+    if (!$res) {
+        echo mysqli_error($con);
+    }
     //close connection
     mysqli_close($con);
     return $res;

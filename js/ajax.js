@@ -15,3 +15,19 @@ function getCartQuantity() {
     },
   });
 }
+
+function getAllCart() {
+  let res;
+  $.ajax({
+    url: './php/cart.php',
+    type: 'POST',
+    async: false,
+    data: {
+      action: 'get_all_cart',
+    },
+    success: function(data) {
+      res = JSON.parse(data).data;
+    }
+  })
+  return res;
+}

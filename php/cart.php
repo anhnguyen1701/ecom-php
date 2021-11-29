@@ -53,6 +53,12 @@ if (!empty($_POST)) {
                     echo json_encode(array("statusCode" => 500));
                 }
                 break;
+            case 'get_all_cart': 
+                $id = 1;
+                $sql = "select * from cart";
+
+                $res = executeResult($sql);
+                echo json_encode(array("data" => $res));
         }
     }
 }

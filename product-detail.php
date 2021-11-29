@@ -184,6 +184,7 @@ if (isset($_GET['p'])) {
                     product_quantity: product_quantity
                 },
                 success: function(data) {
+                    console.log(data);
                     let res = JSON.parse(data);
                     if (res.statusCode == 200) {
                         getCartQuantity();

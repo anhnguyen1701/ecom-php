@@ -1,6 +1,7 @@
 <?php
 require_once '../db/dbhelper.php';
 require_once '../db/config.php';
+session_start();
 
 $con = mysqli_connect(HOST, USERNAME, PASSWORD, DATABASE);
 
@@ -45,6 +46,8 @@ if (!empty($_POST)) {
                         echo mysqli_error($con);
                         $statusCode = 500;
                     }
+                    
+                    $_SESSION['cart_quant'] = 0;
 
                     echo json_encode(array("statusCode" => $statusCode));
                 } else {

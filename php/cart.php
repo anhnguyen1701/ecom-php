@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../db/dbhelper.php';
 require_once '../db/config.php';
 
@@ -8,6 +9,7 @@ if (!empty($_POST)) {
 
         switch ($action) {
             case 'add':
+                $userid = $_SESSION['user_id'];
                 $productid = $_POST['product_id'];
                 $product_quantity = $_POST['product_quantity'];
 
@@ -22,7 +24,7 @@ if (!empty($_POST)) {
                         echo json_encode(array("statusCode" => 500));
                     }
                 } else {
-                    $sql2 = "insert into `cart` (`userid`, `productid`, `product_quant`) values ('1', $productid, $product_quantity)";
+                    $sql2 = "insert into `cart` (`userid`, `productid`, `product_quant`) values ('$userid', $productid, $product_quantity)";
                     if (execute($sql2)) {
                         echo json_encode(array("statusCode" => 200));
                     } else {
@@ -37,6 +39,7 @@ if (!empty($_POST)) {
                 $res = execute($sql);
                 if ($res) {
                     $total = mysqli_fetch_assoc($res)['sum'];
+                    $_SESSION['cart_quant'] = $total;
                     echo json_encode(array("statusCode" => 200, "total" => $total));
                 } else {
                     echo json_encode(array("statusCode" => 500));
@@ -45,7 +48,7 @@ if (!empty($_POST)) {
 
             case 'delete':
                 $id = $_POST['id'];
-                $sql = "delete from cart where id = $id";
+                $sql = "delete from cart where  id = $id";
 
                 if (execute($sql)) {
                     echo json_encode(array("statusCode" => 200));

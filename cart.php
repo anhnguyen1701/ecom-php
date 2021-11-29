@@ -81,9 +81,7 @@ $total_oder_price = 0;
 
                     <div class='col-md-2'>
                         <div class='quantity-area clearfix'>
-                            <input type='button' value='-' onclick='minusQuantity($item[id])' class='qty-btn'>
-                            <input type='text' id='quantity' name='quantity' value='$item[product_quant]' class='quantity-selector'>
-                            <input type='button' value='+' onclick='plusQuantity($item[id])' class='qty-btn'>
+                            <input readonly type='text' id='quantity' name='quantity' value='$item[product_quant]' class='quantity-selector'>
                         </div>
                     </div>
 
@@ -97,6 +95,12 @@ $total_oder_price = 0;
         }
         echo "</div>"
         ?>
+
+        <!-- <div class='quantity-area clearfix'>
+            <input type='button' value='-' onclick='minusQuantity($item[id])' class='qty-btn'>
+            <input type='text' id='quantity' name='quantity' value='$item[product_quant]' class='quantity-selector'>
+            <input type='button' value='+' onclick='plusQuantity($item[id])' class='qty-btn'>
+        </div> -->
     </section>
 
     <div class="row checkout justify-content-end">

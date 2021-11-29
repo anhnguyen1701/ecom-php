@@ -1,8 +1,41 @@
-<div class="header">
+<?php
+session_start();
+function updateLogin()
+{
+    if (isset($_SESSION['user_id'])) {
+        echo "
+                <button class='btn btn-outline-dark'>
+                    <a href='user.php' style='color:#000;  text-decoration: none;'>
+                        <span>$_SESSION[user_email]</span>
+                    </a>
+                </button>
+            ";
+    } else {
+        echo "
+                <button class='btn btn-outline-dark'>
+                    <a href='login.php' style='color:#000;  text-decoration: none;'>
+                        <span>Đăng nhập</span>
+                    </a>
+                </button>
+            ";
+    }
+}
+
+function updateCart()
+{
+    if (isset($_SESSION['cart_quant'])) {
+        echo $_SESSION['cart_quant'];
+    } else {
+        echo 0;
+    }
+}
+?>
+
+<!-- <div class="header">
     <a href="index.html">MIỄN PHÍ
         VẬN CHUYỂN VỚI ĐƠN HÀNG NỘI THÀNH
         - ĐỔI TRẢ TRONG 30 NGÀY - ĐẢM BẢO CHẤT LƯỢNG</a>
-</div>
+</div> -->
 
 <!-- Navigation-->
 <nav class="navbar navbar-light text-light bg-white sticky-top">
@@ -30,15 +63,16 @@
                 <a href="cart.php" style="color:#000; text-decoration: none;">
                     <i class="bi-cart-fill me-1"></i>
                     <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart_quantity">
-                        0
+                        <?php updateCart() ?>
                     </span>
                 </a>
             </button>
-            <button class="btn btn-outline-dark">
-                <a href="./login.html" style="color:#000;  text-decoration: none;">
-                    <i class="bi bi-person-fill"></i>
-                </a>
-            </button>
+            <?php updateLogin() ?>
         </div>
     </div>
+
+    <script src="./js/ajax.js"></script>
+    <script src="./js/ajax.js">
+        document.onload = getCartQuantity();
+    </script>
 </nav>

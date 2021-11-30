@@ -1,3 +1,8 @@
+<?php
+include("db/config.php");
+include("db/dbhelper.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,7 +28,30 @@
 
 <body>
     <?php include 'components/header.php' ?>
+    <?php
 
+    if (!empty($_POST)) {
+        $emailInput = $_POST['email'];
+        $password = $_POST['password'];
+
+        $con = mysqli_connect(HOST, USERNAME, PASSWORD, DATABASE);
+        $sql = "select id, email from user where email = '$emailInput' and password = '$password'";
+        $res = mysqli_query($con, $sql);
+
+        if ($res->num_rows == 1) {
+            $row = mysqli_fetch_array($res);
+            $id = $row['id'];
+            $email = $row['email'];
+            $_SESSION['user_id'] = $id;
+            $_SESSION['user_email'] = $email;
+            header("location: index.php");
+        } else {
+            echo "wrong email/ password";
+        }
+    }
+    ?>
+
+    
     <section class="py-2">
         <div class="container" style="margin-top: 70px;">
             <div class=" row">
@@ -70,29 +98,3 @@
 </body>
 
 </html>
-
-<?php
-include("db/config.php");
-include("db/dbhelper.php");
-
-if (!empty($_POST)) {
-    $emailInput = $_POST['email'];
-    $password = $_POST['password'];
-
-    $con = mysqli_connect(HOST, USERNAME, PASSWORD, DATABASE);
-    $sql = "select id, email from user where email = '$emailInput' and password = '$password'";
-    $res = mysqli_query($con, $sql);
-
-    if ($res->num_rows == 1) {
-        $row = mysqli_fetch_array($res);
-        $id = $row['id'];
-        $email = $row['email'];
-        $_SESSION['user_id'] = $id;
-        $_SESSION['user_email'] = $email;
-        header("location: index.php");
-    } else {
-        echo "wrong email/ password";
-    }
-}
-
-?>

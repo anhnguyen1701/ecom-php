@@ -1,17 +1,19 @@
+<?php
+include 'components/head.php';
+require_once 'db/dbhelper.php';
+require_once 'db/config.php';
+?>
+
 <body>
     <?php include 'components/header.php' ?>
-    <?php
-    include 'components/head.php';
-    require_once 'db/dbhelper.php';
-    require_once 'db/config.php';
 
+    <?php
     if (isset($_GET['id'])) {
         $orderid = $_GET['id'];
         $sql = "select * from order_detail where orderid = $orderid";
         $order = executeResult($sql);
     }
     ?>
-
 
     <!-- Product section-->
     <section class="">
@@ -40,6 +42,7 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
+                            <th scope="col"></th>
                             <th scope="col">Sản phẩm</th>
                             <th scope="col">Đơn giá</th>
                             <th scope="col">Số lượng</th>
@@ -48,18 +51,26 @@
                     </thead>
                     <tbody>
                         <?php
+                        $count = 0;
                         foreach ($order as $item) {
-                            $sql = "select * from product where id = '$item[orderid]'";
-                            $product = executeSingleResult($sql);
-                            echo $product;
                             $count++;
+                            $sql = "select * from product where id = '$item[productid]'";
+                            $product = executeSingleResult($sql);
+
+                            $single_price = number_format($product['price']);
+                            $total = number_format($product['price'] * $item['product_quant']);
                             echo "
-                            <p>helo</p>
                                 <tr>
                                     <th scope='row'>
                                         $count
                                     </th>
+                                    <td>
+                                        <img src=" . $product['img'] . " style=' height: 100;'/>
+                                    </td>
                                     <td>$product[name]</td>
+                                    <td>$single_price</td>
+                                    <td>$item[product_quant]</td>
+                                    <td>$total</td>
                                 </tr>                                    
                                 ";
                         }

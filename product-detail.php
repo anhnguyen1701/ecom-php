@@ -189,8 +189,8 @@ if (isset($_GET['p'])) {
                     if (res.statusCode == 200) {
                         getCartQuantity();
                         alert("Đã thêm sản phẩm vào giỏ hàng");
-                    } else {
-                        console.log(res.statusCode);
+                    } else if(res.statusCode == 401){
+                        alert("Bạn cần đăng nhập");
                     }
                 }
             })

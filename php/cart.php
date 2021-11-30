@@ -9,27 +9,32 @@ if (!empty($_POST)) {
 
         switch ($action) {
             case 'add':
-                $userid = $_SESSION['user_id'];
-                $productid = $_POST['product_id'];
-                $product_quantity = $_POST['product_quantity'];
 
-                $sql = "select * from cart where productid = $productid and userid = $userid";
-                $row = executeSingleResult($sql);
-                if ($row != null) {
-                    $count = (int)$row['product_quant'] + (int)$product_quantity;
-                    $sql2 = "update cart set product_quant = $count where productid = $productid";
-                    if (execute($sql2)) {
-                        echo json_encode(array("statusCode" => 200));
+                if (isset($_SESSION['user_id'])) {
+                    $userid = $_SESSION['user_id'];
+                    $productid = $_POST['product_id'];
+                    $product_quantity = $_POST['product_quantity'];
+
+                    $sql = "select * from cart where productid = $productid and userid = $userid";
+                    $row = executeSingleResult($sql);
+                    if ($row != null) {
+                        $count = (int)$row['product_quant'] + (int)$product_quantity;
+                        $sql2 = "update cart set product_quant = $count where productid = $productid";
+                        if (execute($sql2)) {
+                            echo json_encode(array("statusCode" => 200));
+                        } else {
+                            echo json_encode(array("statusCode" => 500));
+                        }
                     } else {
-                        echo json_encode(array("statusCode" => 500));
+                        $sql2 = "insert into `cart` (`userid`, `productid`, `product_quant`) values ('$userid', $productid, $product_quantity)";
+                        if (execute($sql2)) {
+                            echo json_encode(array("statusCode" => 200));
+                        } else {
+                            echo json_encode(array("statusCode" => 500));
+                        }
                     }
                 } else {
-                    $sql2 = "insert into `cart` (`userid`, `productid`, `product_quant`) values ('$userid', $productid, $product_quantity)";
-                    if (execute($sql2)) {
-                        echo json_encode(array("statusCode" => 200));
-                    } else {
-                        echo json_encode(array("statusCode" => 500));
-                    }
+                    echo json_encode(array("statusCode" => 401));
                 }
                 break;
 
@@ -57,7 +62,7 @@ if (!empty($_POST)) {
                     echo json_encode(array("statusCode" => 500));
                 }
                 break;
-            case 'get_all_cart': 
+            case 'get_all_cart':
                 $id = $_SESSION['user_id'];
                 $sql = "select * from cart";
 

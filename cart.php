@@ -4,7 +4,7 @@ require_once 'db/config.php';
 
 $user_id = 1;
 $sql = "select * from cart where userid = $user_id";
-$res = execute($sql);
+$res = executeResult($sql);
 
 $total_oder_price = 0;
 ?>
@@ -166,6 +166,7 @@ $total_oder_price = 0;
                     let res = JSON.parse(data);
                     if (res.statusCode == 200) {
                         document.querySelector('[data-id=' + '"' + id + '"' + ']').style.display = "none";
+                        location.reload();
                     } else {
                         console.log(res.statusCode);
                     }

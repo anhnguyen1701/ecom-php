@@ -72,7 +72,23 @@ function updateCart()
     </div>
 
     <script src="./js/ajax.js"></script>
-    <script src="./js/ajax.js">
-        document.onload = getCartQuantity();
+    <script>
+        window.onload = function() {
+            $.ajax({
+                url: "./php/cart.php",
+                type: "POST",
+                data: {
+                    action: "get_quantity",
+                },
+                success: function(data) {
+                    var res = JSON.parse(data);
+                    if (res.statusCode == 200) {
+                        document.getElementById("cart_quantity").textContent = res.total;
+                    } else {
+                        console.log(res.statusCode);
+                    }
+                },
+            });
+        };
     </script>
 </nav>

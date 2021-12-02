@@ -1,4 +1,5 @@
 function getCartQuantity() {
+  console.log("get cart quantity");
   $.ajax({
     url: "./php/cart.php",
     type: "POST",
@@ -8,7 +9,7 @@ function getCartQuantity() {
     success: function (data) {
       var res = JSON.parse(data);
       if (res.statusCode == 200) {
-        document.getElementById('cart_quantity').textContent = res.total;
+        document.getElementById("cart_quantity").textContent = res.total;
       } else {
         console.log(res.statusCode);
       }
@@ -19,15 +20,16 @@ function getCartQuantity() {
 function getAllCart() {
   let res;
   $.ajax({
-    url: './php/cart.php',
-    type: 'POST',
+    url: "./php/cart.php",
+    type: "POST",
     async: false,
     data: {
-      action: 'get_all_cart',
+      action: "get_all_cart",
     },
-    success: function(data) {
+    success: function (data) {
       res = JSON.parse(data).data;
-    }
-  })
+    },
+  });
   return res;
 }
+
